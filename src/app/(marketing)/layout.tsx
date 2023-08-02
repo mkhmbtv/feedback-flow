@@ -16,7 +16,7 @@ export default function MarketingLayout({
           <MainNav />
           <nav>
             <Link
-              href="#"
+              href="/login"
               className={cn(buttonVariants({ variant: "secondary" }), "px-4")}
             >
               Login

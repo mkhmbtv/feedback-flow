@@ -1,4 +1,4 @@
-import { LucideProps } from "lucide-react";
+import { ChevronLeft, LucideProps } from "lucide-react";
 
 export const Icons = {
   logo: (props: LucideProps) => (
@@ -15,4 +15,5 @@ export const Icons = {
       />
     </svg>
   ),
+  chevronLeft: ChevronLeft
 };
