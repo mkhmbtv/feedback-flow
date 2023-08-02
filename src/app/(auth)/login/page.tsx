@@ -3,6 +3,7 @@ import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
+import {LoginForm} from "@/components/login-form";
 
 export default function LoginPage() {
   return (
@@ -26,6 +27,7 @@ export default function LoginPage() {
             Continue with
           </h1>
         </div>
+        <LoginForm />
         <p className="px-8 text-center text-sm text-muted-foreground">
           By clicking continue, you agree to our{" "}
           <Link
