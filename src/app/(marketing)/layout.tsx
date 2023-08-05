@@ -1,26 +1,41 @@
 import Link from "next/link";
+import { getServerSession } from "next-auth";
 
 import { MainNav } from "@/components/main-nav";
 import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { authOptions } from "@/lib/auth";
+import { Icons } from "@/components/icons";
 
-export default function MarketingLayout({
+export default async function MarketingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+
   return (
     <div className="flex min-h-screen flex-col">
       <header className="container z-50 bg-background">
         <div className="flex h-16 items-center justify-between">
           <MainNav />
           <nav>
-            <Link
-              href="/login"
-              className={cn(buttonVariants({ variant: "secondary" }), "px-4")}
-            >
-              Login
-            </Link>
+            {session?.user ? (
+              <Link
+                href="/dashboard"
+                className={buttonVariants({ variant: "secondary" })}
+              >
+                Dashboard
+                <Icons.chevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className={buttonVariants({ variant: "secondary" })}
+              >
+                Login
+                <Icons.chevronRight className="ml-1 h-4 w-4" />
+              </Link>
+            )}
           </nav>
         </div>
       </header>

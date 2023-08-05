@@ -1,7 +1,8 @@
-import { ChevronLeft, Loader2, LucideProps } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, LucideProps } from "lucide-react";
 
 export const Icons = {
   chevronLeft: ChevronLeft,
+  chevronRight: ChevronRight,
   spinner: Loader2,
   logo: (props: LucideProps) => (
     <svg
