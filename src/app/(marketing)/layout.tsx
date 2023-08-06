@@ -5,6 +5,7 @@ import { MainNav } from "@/components/main-nav";
 import { buttonVariants } from "@/components/ui/button";
 import { authOptions } from "@/lib/auth";
 import { Icons } from "@/components/icons";
+import { marketingConfig } from "@/config";
 
 export default async function MarketingLayout({
   children,
@@ -17,7 +18,7 @@ export default async function MarketingLayout({
     <div className="flex min-h-screen flex-col">
       <header className="container z-50 bg-background">
         <div className="flex h-16 items-center justify-between">
-          <MainNav />
+          <MainNav items={marketingConfig.mainNav} />
           <nav>
             {session?.user ? (
               <Link
