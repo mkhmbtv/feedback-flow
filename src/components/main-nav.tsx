@@ -1,14 +1,10 @@
 import Link from "next/link";
 
 import { Icons } from "./icons";
-
-type NavItem = {
-  title: string;
-  href: string;
-};
+import { MainNavItem } from "@/types";
 
 interface MainNavProps {
-  items?: NavItem[];
+  items?: MainNavItem[];
 }
 
 export function MainNav({ items }: MainNavProps) {
