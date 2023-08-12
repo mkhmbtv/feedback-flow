@@ -2,9 +2,8 @@ import { Metadata } from "next";
 
 import { DashboardShell } from "@/components/dashboard-shell";
 import { DashboardHeader } from "@/components/dashboard-header";
-import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/empty-state";
-import { Icons } from "@/components/icons";
+import { AddSiteModal } from "@/components/add-site-modal";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -14,10 +13,7 @@ export default function DashboardPage() {
   return (
     <DashboardShell>
       <DashboardHeader title="Sites" description="Add and manage your sites">
-        <Button>
-          <Icons.add className="mr-2 h-4 w-4" />
-          New site
-        </Button>
+        <AddSiteModal />
       </DashboardHeader>
       <div>
         <EmptyState>
@@ -26,10 +22,7 @@ export default function DashboardPage() {
           <EmptyState.Description>
             You haven&apos;t added any sites. Let&apos;s get started.
           </EmptyState.Description>
-          <Button variant="outline">
-            <Icons.add className="mr-2 h-4 w-4" />
-            New site
-          </Button>
+          <AddSiteModal />
         </EmptyState>
       </div>
     </DashboardShell>
