@@ -3,6 +3,7 @@
 import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import * as z from "zod";
 
 import { siteSchema } from "@/lib/validations/site";
@@ -18,8 +19,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { addSite } from "@/lib/actions";
-import { useToast } from "./ui/use-toast";
 import { Icons } from "./icons";
+import { catchErrors } from "@/lib/utils";
 
 interface AddSiteFormProps {
   onSuccess: () => void;
@@ -29,7 +30,6 @@ type FormValues = z.infer<typeof siteSchema>;
 
 export function AddSiteForm({ onSuccess }: AddSiteFormProps) {
   const [isPending, startTransition] = React.useTransition();
-  const { toast } = useToast();
 
   const form = useForm<FormValues>({
     resolver: zodResolver(siteSchema),
@@ -44,28 +44,10 @@ export function AddSiteForm({ onSuccess }: AddSiteFormProps) {
       try {
         await addSite(values);
         form.reset();
-        toast({
-          title: "Sucessfully added your site.",
-        });
+        toast.success("Sucessfully added your site.");
         onSuccess();
       } catch (error) {
-        if (error instanceof z.ZodError) {
-          const errors = error.issues.map((issue) => issue.message);
-          toast({
-            title: errors.join("\n"),
-            variant: "destructive",
-          });
-        } else if (error instanceof Error) {
-          toast({
-            title: error.message,
-            variant: "destructive",
-          });
-        } else {
-          toast({
-            title: "Something went wrong, please try again later.",
-            variant: "destructive",
-          });
-        }
+        catchErrors(error);
       }
     });
   }

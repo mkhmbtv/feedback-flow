@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "./ui/button";
 import { signIn } from "next-auth/react";
-import { useToast } from "./ui/use-toast";
 import { Icons } from "./icons";
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { toast } = useToast();
 
   const loginWitGithub = async () => {
     setIsLoading(true);
@@ -17,11 +16,7 @@ export function LoginForm() {
     try {
       await signIn("github");
     } catch (error) {
-      toast({
-        title: "Error",
-        description: "Something went wrong, please try again.",
-        variant: "destructive",
-      });
+      toast.error("Something went wrong, please try again.");
     } finally {
       setIsLoading(false);
     }
