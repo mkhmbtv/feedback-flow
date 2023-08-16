@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -16,9 +17,21 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { addSite } from "@/lib/actions";
+import { useToast } from "./ui/use-toast";
+import { Icons } from "./icons";
 
-export function AddSiteForm() {
-  const form = useForm<z.infer<typeof siteSchema>>({
+interface AddSiteFormProps {
+  onSuccess: () => void;
+}
+
+type FormValues = z.infer<typeof siteSchema>;
+
+export function AddSiteForm({ onSuccess }: AddSiteFormProps) {
+  const [isPending, startTransition] = React.useTransition();
+  const { toast } = useToast();
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(siteSchema),
     defaultValues: {
       name: "",
@@ -26,8 +39,35 @@ export function AddSiteForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof siteSchema>) {
-    console.log(values);
+  function onSubmit(values: FormValues) {
+    startTransition(async () => {
+      try {
+        await addSite(values);
+        form.reset();
+        toast({
+          title: "Sucessfully added your site.",
+        });
+        onSuccess();
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          const errors = error.issues.map((issue) => issue.message);
+          toast({
+            title: errors.join("\n"),
+            variant: "destructive",
+          });
+        } else if (error instanceof Error) {
+          toast({
+            title: error.message,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "Something went wrong, please try again later.",
+            variant: "destructive",
+          });
+        }
+      }
+    });
   }
 
   return (
@@ -63,7 +103,10 @@ export function AddSiteForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Add Site</Button>
+        <Button type="submit" disabled={isPending}>
+          {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+          Add Site
+        </Button>
       </form>
     </Form>
   );
