@@ -6,6 +6,7 @@ import {
   LayoutPanelTop,
   Loader2,
   LucideProps,
+  Megaphone,
   MessagesSquare,
   Plus,
   User2,
@@ -17,10 +18,11 @@ export const Icons = {
   spinner: Loader2,
   user: User2,
   site: AppWindow,
-  feedback: MessagesSquare,
+  feedback: Megaphone,
   billing: CreditCard,
   layout: LayoutPanelTop,
   add: Plus,
+  comments: MessagesSquare,
   logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

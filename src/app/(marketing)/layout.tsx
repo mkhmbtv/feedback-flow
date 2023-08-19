@@ -1,9 +1,8 @@
 import Link from "next/link";
-import { getServerSession } from "next-auth";
 
 import { MainNav } from "@/components/main-nav";
 import { buttonVariants } from "@/components/ui/button";
-import { authOptions } from "@/lib/auth";
+import { getAuthSession } from "@/lib/auth";
 import { Icons } from "@/components/icons";
 import { marketingConfig } from "@/config";
 
@@ -12,7 +11,7 @@ export default async function MarketingLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await getAuthSession();
 
   return (
     <div className="flex min-h-screen flex-col">

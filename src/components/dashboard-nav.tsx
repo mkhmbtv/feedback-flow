@@ -1,27 +1,64 @@
 "use client";
 
+import * as React from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { useParams, useSelectedLayoutSegments } from "next/navigation";
 
 import { SidebarNavItem } from "@/types";
 import { Icons } from "./icons";
 import { cn } from "@/lib/utils";
 
-interface DashboardNavProps {
-  items: SidebarNavItem[];
-}
+export function SidebarNav() {
+  const segments = useSelectedLayoutSegments();
+  const { siteId } = useParams() as { siteId?: string };
+  const pathname = `/${segments.join("/")}`;
 
-export function DashboardNav({ items }: DashboardNavProps) {
-  const pathname = usePathname();
-
-  if (!items.length) return null;
+  const tabs: SidebarNavItem[] = React.useMemo(() => {
+    if (segments[0] === "site" && siteId) {
+      return [
+        {
+          title: "Back to dashboard",
+          href: "/dashboard",
+          icon: "chevronLeft",
+        },
+        {
+          title: "Comments",
+          href: `/site/${siteId}`,
+          icon: "comments",
+        },
+      ];
+    } else {
+      return [
+        {
+          title: "Account",
+          href: "/dashboard/account",
+          icon: "user",
+        },
+        {
+          title: "Sites",
+          href: "/dashboard",
+          icon: "site",
+        },
+        {
+          title: "Feedback",
+          href: "/dashboard/feedback",
+          icon: "feedback",
+        },
+        {
+          title: "Billing",
+          href: "/dashboard/billing",
+          icon: "billing",
+        },
+      ];
+    }
+  }, [segments, siteId]);
 
   return (
     <nav className="flex w-full flex-col gap-2">
-      {items.map((item, index) => {
+      {tabs.map((item) => {
         const Icon = Icons[item.icon ?? "chevronRight"];
         return (
-          <Link key={index} href={item.href}>
+          <Link key={item.title} href={item.href}>
             <span
               className={cn(
                 "group flex items-center rounded-md px-3 py-2 text-sm font-medium hover:bg-muted hover:text-accent-foreground",

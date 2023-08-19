@@ -48,7 +48,7 @@ export function SiteTable({ sites }: SiteTableProps) {
             </TableCell>
             <TableCell>
               <Link
-                href="#"
+                href={`/site/${site.id}`}
                 className={cn(
                   buttonVariants({ variant: "link", size: "sm" }),
                   "px-0",

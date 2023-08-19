@@ -16,7 +16,3 @@ export type SidebarNavItem = NavItem & {
 export type MarketingConfig = {
   mainNav: MainNavItem[];
 };
-
-export type DashboardConfig = {
-  sidebarNav: SidebarNavItem[];
-};

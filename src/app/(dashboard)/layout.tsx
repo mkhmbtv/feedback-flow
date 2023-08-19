@@ -1,18 +1,16 @@
-import { getServerSession } from "next-auth";
 import { notFound } from "next/navigation";
 
 import { MainNav } from "@/components/main-nav";
-import { authOptions } from "@/lib/auth";
 import { UserAccountNav } from "@/components/user-account-nav";
-import { DashboardNav } from "@/components/dashboard-nav";
-import { dashboardConfig } from "@/config";
+import { SidebarNav } from "@/components/dashboard-nav";
+import { getAuthSession } from "@/lib/auth";
 
 export default async function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await getAuthSession();
 
   if (!session?.user) {
     notFound();
@@ -28,7 +26,7 @@ export default async function DashboardLayout({
       </header>
       <div className="container grid flex-1 gap-7 md:grid-cols-[220px_minmax(0,1fr)]">
         <aside className="-ml-2 hidden w-full border-r pr-6 pt-6 md:block">
-          <DashboardNav items={dashboardConfig.sidebarNav} />
+          <SidebarNav />
         </aside>
         <main className="pt-6">{children}</main>
       </div>
