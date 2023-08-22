@@ -10,7 +10,9 @@ import { cn } from "@/lib/utils";
 
 export function SidebarNav() {
   const segments = useSelectedLayoutSegments();
-  const { siteId } = useParams() as { siteId?: string };
+  const { site: siteParams } = useParams() as { site?: string[] };
+  const siteId = siteParams ? siteParams[0] : null;
+  const route = siteParams && siteParams.length > 1 ? siteParams[1] : "";
   const pathname = `/${segments.join("/")}`;
 
   const tabs: SidebarNavItem[] = React.useMemo(() => {
@@ -23,7 +25,7 @@ export function SidebarNav() {
         },
         {
           title: "Comments",
-          href: `/site/${siteId}`,
+          href: `/site/${siteId}/${route}`,
           icon: "comments",
         },
       ];
@@ -51,7 +53,7 @@ export function SidebarNav() {
         },
       ];
     }
-  }, [segments, siteId]);
+  }, [segments, siteId, route]);
 
   return (
     <nav className="flex w-full flex-col gap-2">

@@ -13,16 +13,23 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user, account }) => {
       const dbUser = await db.user.findFirst({
         where: {
           email: token.email,
+        },
+        include: {
+          accounts: true,
         },
       });
 
       if (!dbUser) {
         if (user) {
-          token.id = user?.id;
+          token.id = user.id;
+        }
+
+        if (account) {
+          token.provider = account.provider;
         }
         return token;
       }
@@ -32,6 +39,7 @@ export const authOptions: NextAuthOptions = {
         name: dbUser.name,
         email: dbUser.email,
         picture: dbUser.image,
+        provider: dbUser.accounts[0].provider,
       };
     },
     session: async ({ session, token }) => {
@@ -40,6 +48,7 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name;
         session.user.email = token.email;
         session.user.image = token.picture;
+        session.user.provider = token.provider;
       }
       return session;
     },

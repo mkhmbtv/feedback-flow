@@ -1,7 +1,7 @@
 interface DashboardHeaderProps {
   title: string;
   description?: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 export function DashboardHeader({
