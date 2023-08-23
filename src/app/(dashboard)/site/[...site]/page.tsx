@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { FeedbackForm } from "@/components/feedback-form";
+import { FeedbackSection } from "@/components/feedback-section";
 import { db } from "@/lib/db";
 
 interface SiteFeedbackPageProps {
@@ -31,6 +32,7 @@ export default async function SiteFeedbackPage({
         description={`All feedback for ${site.name}`}
       />
       <FeedbackForm siteId={site.id} />
+      <FeedbackSection siteId={site.id} />
     </DashboardShell>
   );
 }
