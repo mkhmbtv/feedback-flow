@@ -3,12 +3,14 @@ import { Feedback } from "./feedback";
 
 interface FeedbackSectionProps {
   siteId: string;
+  route: string;
 }
 
-export async function FeedbackSection({ siteId }: FeedbackSectionProps) {
+export async function FeedbackSection({ siteId, route }: FeedbackSectionProps) {
   const allFeedback = await db.feedback.findMany({
     where: {
       siteId,
+      route,
     },
     include: {
       author: {
@@ -30,7 +32,7 @@ export async function FeedbackSection({ siteId }: FeedbackSectionProps) {
   });
 
   return allFeedback.length > 0 ? (
-    <div className="flex flex-col">
+    <div className="mb-10 flex flex-col">
       {allFeedback.map((feedback, index) => (
         <Feedback
           key={feedback.id}

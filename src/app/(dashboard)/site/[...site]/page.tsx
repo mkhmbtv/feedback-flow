@@ -21,6 +21,8 @@ export default async function SiteFeedbackPage({
     },
   });
 
+  const route = params.site.length > 1 ? params.site[1] : "/";
+
   if (!site) {
     notFound();
   }
@@ -32,7 +34,7 @@ export default async function SiteFeedbackPage({
         description={`All feedback for ${site.name}`}
       />
       <FeedbackForm siteId={site.id} />
-      <FeedbackSection siteId={site.id} />
+      <FeedbackSection siteId={site.id} route={route} />
     </DashboardShell>
   );
 }

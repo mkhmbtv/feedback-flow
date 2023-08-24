@@ -98,4 +98,5 @@ model Feedback {
 
   @@index([authorId])
   @@index([siteId])
+  @@index([siteId, route])
 }
