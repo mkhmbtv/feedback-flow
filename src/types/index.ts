@@ -1,4 +1,5 @@
 import { Icons } from "@/components/icons";
+import type { Feedback, User } from "@prisma/client";
 
 export type NavItem = {
   title: string;
@@ -16,3 +17,5 @@ export type SidebarNavItem = NavItem & {
 export type MarketingConfig = {
   mainNav: MainNavItem[];
 };
+
+export type FeedbackWithAuthor = Feedback & { author: User };
