@@ -12,7 +12,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { buttonVariants } from "./ui/button";
-import { Skeleton } from "./ui/skeleton";
 import { cn } from "@/lib/utils";
 
 interface SiteTableProps {
@@ -66,27 +65,3 @@ export function SiteTable({ sites }: SiteTableProps) {
     </Table>
   );
 }
-
-interface SiteTableSkeletonRow extends React.ComponentPropsWithoutRef<"div"> {}
-
-SiteTable.SkeletonRow = function SiteTableSkeletonRow({
-  className,
-  ...props
-}: SiteTableSkeletonRow) {
-  return (
-    <TableRow>
-      <TableCell>
-        <Skeleton className={cn("h-4", className)} {...props} />
-      </TableCell>
-      <TableCell>
-        <Skeleton className={cn("h-4", className)} {...props} />
-      </TableCell>
-      <TableCell>
-        <Skeleton className={cn("h-4", className)} {...props} />
-      </TableCell>
-      <TableCell>
-        <Skeleton className={cn("ml-auto h-4", className)} {...props} />
-      </TableCell>
-    </TableRow>
-  );
-};

@@ -17,7 +17,7 @@ interface FeedbackTableProps {
 export function FeedbackTable({ allFeedback }: FeedbackTableProps) {
   return (
     <Table>
-      <TableCaption>Feedback for all of your sites</TableCaption>
+      <TableCaption>Feedback left for your sites</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead>Name</TableHead>

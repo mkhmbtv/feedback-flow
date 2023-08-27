@@ -1,4 +1,3 @@
-import { AddSiteModal } from "@/components/add-site-modal";
 import { DashboardHeader } from "@/components/dashboard-header";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { SkeletonTableRow } from "@/components/skeleton-table-row";
@@ -11,21 +10,22 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-export default function DashboardLoading() {
+export default function FeedbackLoading() {
   return (
     <DashboardShell>
-      <DashboardHeader title="Sites" description="Add and manage your sites">
-        <AddSiteModal />
-      </DashboardHeader>
+      <DashboardHeader
+        title="Feedback"
+        description="Manage feedback for your sites"
+      />
       <div>
         <Table>
-          <TableCaption>A list of your websites.</TableCaption>
+          <TableCaption>Feedback left for your sites</TableCaption>
           <TableHeader>
             <TableRow>
               <TableHead>Name</TableHead>
-              <TableHead>Site Link</TableHead>
-              <TableHead>Feedback Link</TableHead>
-              <TableHead className="text-right">Date Added</TableHead>
+              <TableHead>Feedback</TableHead>
+              <TableHead>Route</TableHead>
+              <TableHead className="text-right">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
