@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 
 import { MainNav } from "@/components/main-nav";
 import { UserAccountNav } from "@/components/user-account-nav";
-import { SidebarNav } from "@/components/dashboard-nav";
+import { SidebarNav } from "@/components/sidebar-nav";
 import { getAuthSession } from "@/lib/auth";
 
 export default async function DashboardLayout({

@@ -25,7 +25,7 @@ export function SidebarNav() {
         },
         {
           title: "Comments",
-          href: `/site/${siteId}/${route}`,
+          href: route ? `/site/${siteId}/${route}` : `/site/${siteId}`,
           icon: "comments",
         },
       ];
