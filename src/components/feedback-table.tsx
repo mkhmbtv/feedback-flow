@@ -42,7 +42,7 @@ export function FeedbackTable({ allFeedback }: FeedbackTableProps) {
             </TableCell>
             <TableCell>{feedback.status}</TableCell>
             <TableCell>
-              <DeleteFeedback />
+              <DeleteFeedback feedbackId={feedback.id} />
             </TableCell>
           </TableRow>
         ))}

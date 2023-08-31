@@ -41,3 +41,28 @@ export async function createFeedback(input: z.infer<typeof feedbackSchema>) {
 
   revalidatePath(`/site/${input.siteId}`);
 }
+
+export async function deleteFeedback(
+  id: string,
+) {
+  const session = await getAuthSession();
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
+
+  const feedback = await db.feedback.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!feedback) {
+    throw new Error("Feedback not found.");
+  }
+
+  await db.feedback.delete({
+    where: {
+      id,
+    },
+  });
+}
