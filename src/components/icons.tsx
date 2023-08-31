@@ -9,6 +9,7 @@ import {
   Megaphone,
   MessagesSquare,
   Plus,
+  Trash2,
   User2,
 } from "lucide-react";
 
@@ -23,6 +24,7 @@ export const Icons = {
   layout: LayoutPanelTop,
   add: Plus,
   comments: MessagesSquare,
+  delete: Trash2,
   logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

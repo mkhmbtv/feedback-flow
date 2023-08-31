@@ -8,6 +8,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "./ui/badge";
+import DeleteFeedback from "./delete-feedback";
 import { FeedbackWithAuthor } from "@/types";
 
 interface FeedbackTableProps {
@@ -23,7 +24,8 @@ export function FeedbackTable({ allFeedback }: FeedbackTableProps) {
           <TableHead>Name</TableHead>
           <TableHead>Feedback</TableHead>
           <TableHead>Route</TableHead>
-          <TableHead className="text-right">Status</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead className="w-[50px]" />
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -38,7 +40,10 @@ export function FeedbackTable({ allFeedback }: FeedbackTableProps) {
                 {feedback.route}
               </Badge>
             </TableCell>
-            <TableCell className="text-right">{feedback.status}</TableCell>
+            <TableCell>{feedback.status}</TableCell>
+            <TableCell>
+              <DeleteFeedback />
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
