@@ -23,9 +23,7 @@ interface DeleteFeedbackProps {
   feedbackId: string;
 }
 
-export default function DeleteFeedback({
-  feedbackId,
-}: DeleteFeedbackProps) {
+export default function DeleteFeedback({ feedbackId }: DeleteFeedbackProps) {
   const [isPending, startTransition] = React.useTransition();
   const router = useRouter();
 
@@ -48,7 +46,7 @@ export default function DeleteFeedback({
             onClick={() => {
               try {
                 startTransition(async () => {
-                  await deleteFeedback(feedbackId);
+                  await deleteFeedback({ id: feedbackId });
                   toast.success("Sucessfully deleted feedback.");
                   router.refresh();
                 });

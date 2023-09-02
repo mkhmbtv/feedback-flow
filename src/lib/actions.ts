@@ -4,7 +4,11 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 
 import { siteSchema } from "./validations/site";
-import { feedbackSchema } from "./validations/feedback";
+import {
+  deleteFeedbackSchema,
+  feedbackSchema,
+  updateFeedbackSchema,
+} from "./validations/feedback";
 import { getAuthSession } from "./auth";
 import { db } from "./db";
 
@@ -42,8 +46,28 @@ export async function createFeedback(input: z.infer<typeof feedbackSchema>) {
   revalidatePath(`/site/${input.siteId}`);
 }
 
+export async function updateFeedback(
+  input: z.infer<typeof updateFeedbackSchema>,
+) {
+  const session = await getAuthSession();
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
+
+  await db.feedback.update({
+    where: {
+      id: input.id,
+    },
+    data: {
+      status: input.status === "PENDING" ? "APPROVED" : "PENDING",
+    },
+  });
+
+  revalidatePath("/dashboard/feedback");
+}
+
 export async function deleteFeedback(
-  id: string,
+  input: z.infer<typeof deleteFeedbackSchema>,
 ) {
   const session = await getAuthSession();
   if (!session) {
@@ -52,7 +76,7 @@ export async function deleteFeedback(
 
   const feedback = await db.feedback.findUnique({
     where: {
-      id,
+      id: input.id,
     },
   });
 
@@ -62,7 +86,7 @@ export async function deleteFeedback(
 
   await db.feedback.delete({
     where: {
-      id,
+      id: input.id,
     },
   });
 }

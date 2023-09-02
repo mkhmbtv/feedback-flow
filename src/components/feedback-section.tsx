@@ -11,6 +11,7 @@ export async function FeedbackSection({ siteId, route }: FeedbackSectionProps) {
     where: {
       siteId,
       route,
+      status: "APPROVED",
     },
     include: {
       author: {

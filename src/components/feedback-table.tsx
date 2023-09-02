@@ -10,6 +10,7 @@ import {
 import { Badge } from "./ui/badge";
 import DeleteFeedback from "./delete-feedback";
 import { FeedbackWithAuthor } from "@/types";
+import { SwitchFeedbackStatus } from "./switch-feedback-status";
 
 interface FeedbackTableProps {
   allFeedback: FeedbackWithAuthor[];
@@ -24,7 +25,7 @@ export function FeedbackTable({ allFeedback }: FeedbackTableProps) {
           <TableHead>Name</TableHead>
           <TableHead>Feedback</TableHead>
           <TableHead>Route</TableHead>
-          <TableHead>Status</TableHead>
+          <TableHead>Visible</TableHead>
           <TableHead className="w-[50px]" />
         </TableRow>
       </TableHeader>
@@ -40,7 +41,9 @@ export function FeedbackTable({ allFeedback }: FeedbackTableProps) {
                 {feedback.route}
               </Badge>
             </TableCell>
-            <TableCell>{feedback.status}</TableCell>
+            <TableCell>
+              <SwitchFeedbackStatus feedback={feedback} />
+            </TableCell>
             <TableCell>
               <DeleteFeedback feedbackId={feedback.id} />
             </TableCell>
