@@ -1,5 +1,6 @@
-import { Icons } from "@/components/icons";
 import type { Feedback, User } from "@prisma/client";
+
+import { Icons } from "@/components/icons";
 
 export type NavItem = {
   title: string;
@@ -19,3 +20,16 @@ export type MarketingConfig = {
 };
 
 export type FeedbackWithAuthor = Feedback & { author: User };
+
+export type SubscriptionPlan = {
+  name: string;
+  description: string;
+  stripePriceId: string;
+};
+
+export type UserSubscriptionPlan = SubscriptionPlan &
+  Pick<User, "stripeCustomerId" | "stripeSubscriptionId"> & {
+    stripeCurrentPeriodEnd?: number;
+    isPro: boolean;
+    isCanceled: boolean;
+  };

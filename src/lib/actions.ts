@@ -9,8 +9,12 @@ import {
   feedbackSchema,
   updateFeedbackSchema,
 } from "./validations/feedback";
+import { manageSubscriptionSchema } from "./validations/stripe";
 import { getAuthSession } from "./auth";
 import { db } from "./db";
+import { absoluteUrl } from "./utils";
+import { stripe } from "./stripe";
+import { subscriptionPlans } from "@/config";
 
 export async function addSite(input: z.infer<typeof siteSchema>) {
   const session = await getAuthSession();
@@ -89,4 +93,49 @@ export async function deleteFeedback(
       id: input.id,
     },
   });
+}
+
+export async function manageSubscription(
+  input: z.infer<typeof manageSubscriptionSchema>,
+) {
+  const billingUrl = absoluteUrl("/dashboard/billing");
+
+  const session = await getAuthSession();
+  if (!session?.user) {
+    throw new Error("User not found");
+  }
+
+  if (input.isPro && input.stripeCustomerId) {
+    const stripeSession = await stripe.billingPortal.sessions.create({
+      customer: input.stripeCustomerId,
+      return_url: billingUrl,
+    });
+
+    return {
+      url: stripeSession.url,
+    };
+  }
+
+  // If the user is not subscribed to a plan, we create a Stripe Checkout session
+  const stripeSession = await stripe.checkout.sessions.create({
+    success_url: billingUrl,
+    cancel_url: billingUrl,
+    payment_method_types: ["card"],
+    mode: "subscription",
+    billing_address_collection: "auto",
+    customer_email: session.user.email!,
+    line_items: [
+      {
+        price: subscriptionPlans.pro.stripePriceId,
+        quantity: 1,
+      },
+    ],
+    metadata: {
+      userId: session.user.id,
+    },
+  });
+
+  return {
+    url: stripeSession.url,
+  };
 }
