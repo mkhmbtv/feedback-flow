@@ -15,11 +15,28 @@ import { db } from "./db";
 import { absoluteUrl } from "./utils";
 import { stripe } from "./stripe";
 import { subscriptionPlans } from "@/config";
+import { getUserSubscription } from "./subscription";
 
 export async function addSite(input: z.infer<typeof siteSchema>) {
   const session = await getAuthSession();
   if (!session) {
     throw new Error("Unauthorized");
+  }
+
+  const subscriptionPlan = await getUserSubscription(session.user.id);
+
+  if (!subscriptionPlan.isPro) {
+    const sitesCount = await db.site.count({
+      where: {
+        authorId: session.user.id,
+      },
+    });
+
+    if (sitesCount >= 1) {
+      throw new Error(
+        "Site limit reached. Upgrade to a pro plan to add more sites.",
+      );
+    }
   }
 
   await db.site.create({
