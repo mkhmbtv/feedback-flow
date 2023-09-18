@@ -2,13 +2,10 @@ import { DashboardHeader } from "@/components/dashboard-header";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { CardSkeleton } from "@/components/card-skeleton";
 
-export default function BillingLoading() {
+export default function AccountLoading() {
   return (
     <DashboardShell>
-      <DashboardHeader
-        title="Billing"
-        description="Manage your billing and subscription"
-      />
+      <DashboardHeader title="Account" description="Manage your account" />
       <CardSkeleton />
     </DashboardShell>
   );

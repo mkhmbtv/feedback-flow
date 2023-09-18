@@ -21,12 +21,14 @@ export default async function BillingPage() {
 
   const subscriptionPlan = await getUserSubscription(session.user.id);
   return (
-    <DashboardShell className="space-y-4">
+    <DashboardShell>
       <DashboardHeader
         title="Billing"
         description="Manage your billing and subscription"
       />
-      <SubscriptionForm subscriptionPlan={subscriptionPlan} />
+      <div>
+        <SubscriptionForm subscriptionPlan={subscriptionPlan} />
+      </div>
     </DashboardShell>
   );
 }

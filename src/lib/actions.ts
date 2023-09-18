@@ -10,6 +10,7 @@ import {
   updateFeedbackSchema,
 } from "./validations/feedback";
 import { manageSubscriptionSchema } from "./validations/stripe";
+import { userSchema } from "./validations/user";
 import { getAuthSession } from "./auth";
 import { db } from "./db";
 import { absoluteUrl } from "./utils";
@@ -155,4 +156,20 @@ export async function manageSubscription(
   return {
     url: stripeSession.url,
   };
+}
+
+export async function editUsername(input: z.infer<typeof userSchema>) {
+  const session = await getAuthSession();
+  if (!session?.user || session.user.id !== input.id) {
+    throw new Error("Unauthorized");
+  }
+
+  await db.user.update({
+    where: {
+      id: session.user.id,
+    },
+    data: {
+      name: input.name,
+    },
+  });
 }
