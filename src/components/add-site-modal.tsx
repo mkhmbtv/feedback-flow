@@ -13,12 +13,10 @@ import {
 import { Button } from "./ui/button";
 import { Icons } from "./icons";
 import { AddSiteForm } from "./add-site-form";
-import { useRouter } from "next/navigation";
 
 export function AddSiteModal() {
   const [dialogOpen, setDialogOpen] = React.useState(false);
 
-  const router = useRouter();
   return (
     <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
       <DialogTrigger asChild>
@@ -37,7 +35,6 @@ export function AddSiteModal() {
         <AddSiteForm
           onSuccess={() => {
             setDialogOpen(false);
-            router.refresh();
           }}
         />
       </DialogContent>

@@ -1,8 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useRouter } from "next/navigation";
-import type { Feedback } from "@prisma/client";
+import { Feedback } from "@prisma/client";
 import { toast } from "sonner";
 
 import { Switch } from "./ui/switch";
@@ -14,21 +13,15 @@ interface SwitchFeedbackStatusProps {
 }
 
 export function SwitchFeedbackStatus({ feedback }: SwitchFeedbackStatusProps) {
-  const [_, startTransition] = React.useTransition();
-  const router = useRouter();
-
   const isChecked = feedback.status === "APPROVED";
 
   return (
     <Switch
       checked={isChecked}
-      onCheckedChange={() => {
+      onCheckedChange={async () => {
         try {
-          startTransition(async () => {
-            await updateFeedback(feedback);
-            toast.success("Sucessfully updated feedback.");
-            router.refresh();
-          });
+          await updateFeedback(feedback);
+          toast.success("Sucessfully updated feedback.");
         } catch (error) {
           catchErrors(error);
         }

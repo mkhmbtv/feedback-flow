@@ -22,7 +22,6 @@ import { Label } from "./ui/label";
 import { Button } from "./ui/button";
 import { editUsername } from "@/lib/actions";
 import { Icons } from "./icons";
-import { useRouter } from "next/navigation";
 
 interface UsernameUpdateFormProps
   extends React.ComponentPropsWithoutRef<"form"> {
@@ -36,13 +35,10 @@ export function UsernameUpdateForm({
   className,
   ...props
 }: UsernameUpdateFormProps) {
-  const [isPending, startTransition] = React.useTransition();
-  const router = useRouter();
-
   const {
     handleSubmit,
     register,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(updateUsernameSchema),
     defaultValues: {
@@ -50,20 +46,16 @@ export function UsernameUpdateForm({
     },
   });
 
-  function onSubmit(data: FormValues) {
-    startTransition(async () => {
-      try {
-        await editUsername({
-          id: user.id,
-          ...data,
-        });
-
-        toast.success("Successully updated your name");
-        router.refresh();
-      } catch (error) {
-        catchErrors(error);
-      }
-    });
+  async function onSubmit(data: FormValues) {
+    try {
+      await editUsername({
+        id: user.id,
+        ...data,
+      });
+      toast.success("Successully updated your name");
+    } catch (error) {
+      catchErrors(error);
+    }
   }
 
   return (
@@ -96,8 +88,8 @@ export function UsernameUpdateForm({
           </div>
         </CardContent>
         <CardFooter>
-          <Button type="submit" disabled={isPending}>
-            {isPending && (
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Save

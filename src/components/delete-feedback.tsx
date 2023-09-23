@@ -17,15 +17,13 @@ import {
 import { Icons } from "./icons";
 import { deleteFeedback } from "@/lib/actions";
 import { catchErrors } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 
 interface DeleteFeedbackProps {
   feedbackId: string;
 }
 
 export default function DeleteFeedback({ feedbackId }: DeleteFeedbackProps) {
-  const [isPending, startTransition] = React.useTransition();
-  const router = useRouter();
+  const [isLoading, setIsLoading] = React.useState(false);
 
   return (
     <AlertDialog>
@@ -43,20 +41,20 @@ export default function DeleteFeedback({ feedbackId }: DeleteFeedbackProps) {
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction
             className="bg-red-600 focus:ring-red-600"
-            onClick={() => {
+            onClick={async () => {
               try {
-                startTransition(async () => {
-                  await deleteFeedback({ id: feedbackId });
-                  toast.success("Sucessfully deleted feedback.");
-                  router.refresh();
-                });
+                setIsLoading(true);
+                await deleteFeedback({ id: feedbackId });
+                toast.success("Sucessfully deleted feedback.");
               } catch (error) {
                 catchErrors(error);
+              } finally {
+                setIsLoading(false);
               }
             }}
-            disabled={isPending}
+            disabled={isLoading}
           >
-            {isPending && (
+            {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
             Delete

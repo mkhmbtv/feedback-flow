@@ -29,8 +29,6 @@ interface AddSiteFormProps {
 type FormValues = z.infer<typeof siteSchema>;
 
 export function AddSiteForm({ onSuccess }: AddSiteFormProps) {
-  const [isPending, startTransition] = React.useTransition();
-
   const form = useForm<FormValues>({
     resolver: zodResolver(siteSchema),
     defaultValues: {
@@ -39,17 +37,15 @@ export function AddSiteForm({ onSuccess }: AddSiteFormProps) {
     },
   });
 
-  function onSubmit(values: FormValues) {
-    startTransition(async () => {
-      try {
-        await addSite(values);
-        form.reset();
-        toast.success("Sucessfully added your site.");
-        onSuccess();
-      } catch (error) {
-        catchErrors(error);
-      }
-    });
+  async function onSubmit(values: FormValues) {
+    try {
+      await addSite(values);
+      form.reset();
+      toast.success("Sucessfully added your site.");
+      onSuccess();
+    } catch (error) {
+      catchErrors(error);
+    }
   }
 
   return (
@@ -85,8 +81,10 @@ export function AddSiteForm({ onSuccess }: AddSiteFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isPending}>
-          {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting && (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          )}
           Add Site
         </Button>
       </form>
