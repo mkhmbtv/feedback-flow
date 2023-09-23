@@ -25,7 +25,7 @@ export default function FeedbackLoading() {
               <TableHead>Name</TableHead>
               <TableHead>Feedback</TableHead>
               <TableHead>Route</TableHead>
-              <TableHead className="text-right">Status</TableHead>
+              <TableHead className="text-right">Visible</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>

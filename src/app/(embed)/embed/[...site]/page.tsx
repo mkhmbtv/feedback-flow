@@ -1,8 +1,13 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 
 import { Feedback } from "@/components/feedback";
 import { getSiteData, getSiteFeedback } from "@/lib/fetchers";
 import { db } from "@/lib/db";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+
+export const dynamic = "auto";
 
 export async function generateStaticParams() {
   const sites = await db.site.findMany();
@@ -19,13 +24,14 @@ interface EmbeddedFeedbackPageProps {
     site: string[];
   };
 }
-
 export default async function EmbeddedFeedbackPage({
   params,
 }: EmbeddedFeedbackPageProps) {
+  const siteId = params.site[0];
+  const route = params.site[1] ?? "/";
   const [siteData, allFeedback] = await Promise.all([
-    getSiteData(params.site[0]),
-    getSiteFeedback(params.site[0], params.site[1] ?? "/"),
+    getSiteData(siteId),
+    getSiteFeedback(siteId, route),
   ]);
 
   if (!siteData) {
@@ -33,7 +39,16 @@ export default async function EmbeddedFeedbackPage({
   }
 
   return allFeedback.length > 0 ? (
-    <div className="flex w-full flex-col">
+    <div className="flex flex-col">
+      <Link
+        href={`/site/${params.site.join("/")}`}
+        className={cn(
+          buttonVariants({ variant: "link" }),
+          "mb-6 justify-start px-0",
+        )}
+      >
+        Leave a comment
+      </Link>
       {allFeedback.map((feedback, index) => (
         <Feedback
           key={feedback.id}

@@ -13,8 +13,8 @@ export async function getSiteData(siteId: string) {
     },
     [`${siteId}-data`],
     {
-      revalidate: 900,
       tags: [`${siteId}-data`],
+      revalidate: 10,
     },
   )();
 }
@@ -42,8 +42,8 @@ export async function getSiteFeedback(siteId: string, route: string = "/") {
     },
     [`${siteId}-${route}-feedback`],
     {
-      revalidate: 900,
       tags: [`${siteId}-${route}-feedback`],
+      revalidate: 10,
     },
   )();
 }

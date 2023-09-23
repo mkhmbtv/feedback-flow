@@ -1,9 +1,8 @@
 "use client";
 
-import * as React from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useParams, useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
 import { toast } from "sonner";
 import * as z from "zod";
 
@@ -29,8 +28,6 @@ interface FeedbackFormProps {
 type FormValues = z.infer<typeof createFeedbackSchema>;
 
 export function FeedbackForm({ siteId }: FeedbackFormProps) {
-  const [isPending, startTransition] = React.useTransition();
-
   const { site: siteParams } = useParams() as { site: string[] };
   const route = siteParams.length > 1 ? siteParams[1] : null;
 
@@ -41,20 +38,18 @@ export function FeedbackForm({ siteId }: FeedbackFormProps) {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    startTransition(async () => {
-      try {
-        await createFeedback({
-          siteId,
-          text: data.text,
-          route: route ?? "/",
-        });
-        form.reset();
-        toast.success("Successully created comment");
-      } catch (error) {
-        catchErrors(error);
-      }
-    });
+  const onSubmit = async (data: FormValues) => {
+    try {
+      await createFeedback({
+        siteId,
+        text: data.text,
+        route: route ?? "/",
+      });
+      form.reset();
+      toast.success("Successully created comment");
+    } catch (error) {
+      catchErrors(error);
+    }
   };
 
   return (
@@ -83,8 +78,10 @@ export function FeedbackForm({ siteId }: FeedbackFormProps) {
             </FormItem>
           )}
         />
-        <Button type="submit" disabled={isPending}>
-          {isPending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+        <Button type="submit" disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting && (
+            <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+          )}
           Leave Feedback
         </Button>
       </form>

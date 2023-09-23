@@ -1,7 +1,7 @@
 "use server";
 
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
+import { revalidateTag } from "next/cache";
 
 import { siteSchema } from "./validations/site";
 import {
@@ -40,7 +40,7 @@ export async function addSite(input: z.infer<typeof siteSchema>) {
     }
   }
 
-  await db.site.create({
+  const newSite = await db.site.create({
     data: {
       name: input.name,
       url: input.url,
@@ -48,7 +48,7 @@ export async function addSite(input: z.infer<typeof siteSchema>) {
     },
   });
 
-  revalidatePath("/dashboard");
+  revalidateTag(`${newSite.id}-data`);
 }
 
 export async function createFeedback(input: z.infer<typeof feedbackSchema>) {
@@ -65,7 +65,7 @@ export async function createFeedback(input: z.infer<typeof feedbackSchema>) {
     },
   });
 
-  revalidatePath(`/site/${input.siteId}`);
+  revalidateTag(`${input.siteId}-${input.route}-feedback`);
 }
 
 export async function updateFeedback(
@@ -76,7 +76,7 @@ export async function updateFeedback(
     throw new Error("Unauthorized");
   }
 
-  await db.feedback.update({
+  const { siteId, route } = await db.feedback.update({
     where: {
       id: input.id,
     },
@@ -85,7 +85,7 @@ export async function updateFeedback(
     },
   });
 
-  revalidatePath("/dashboard/feedback");
+  revalidateTag(`${siteId}-${route}-feedback`);
 }
 
 export async function deleteFeedback(
@@ -106,11 +106,15 @@ export async function deleteFeedback(
     throw new Error("Feedback not found.");
   }
 
+  const { siteId, route } = feedback;
+
   await db.feedback.delete({
     where: {
       id: input.id,
     },
   });
+
+  revalidateTag(`${siteId}-${route}-feedback`);
 }
 
 export async function manageSubscription(
