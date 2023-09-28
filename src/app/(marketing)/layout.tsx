@@ -15,7 +15,7 @@ export default async function MarketingLayout({
 
   return (
     <div className="flex min-h-screen flex-col">
-      <header className="container z-50 bg-background">
+      <header className="container z-50 border-b bg-background">
         <div className="flex h-16 items-center justify-between">
           <MainNav items={marketingConfig.mainNav} />
           <nav>
