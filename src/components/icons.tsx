@@ -9,7 +9,9 @@ import {
   LucideProps,
   Megaphone,
   MessagesSquare,
+  Moon,
   Plus,
+  Sun,
   Trash2,
   User2,
 } from "lucide-react";
@@ -27,6 +29,8 @@ export const Icons = {
   comments: MessagesSquare,
   delete: Trash2,
   component: Component,
+  sun: Sun,
+  moon: Moon,
   logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

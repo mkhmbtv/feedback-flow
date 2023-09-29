@@ -1,6 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Icons } from "./icons";
 import { siteConfig } from "@/config";
+import { ModeToggle } from "./mode-toggle";
 
 interface FooterProps extends React.ComponentPropsWithoutRef<"footer"> {}
 
@@ -31,6 +32,7 @@ export function Footer({ className }: FooterProps) {
             </a>
           </p>
         </div>
+        <ModeToggle />
       </div>
     </footer>
   );
