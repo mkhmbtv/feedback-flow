@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { MainNav } from "@/components/main-nav";
 import { UserAccountNav } from "@/components/user-account-nav";
 import { SidebarNav } from "@/components/sidebar-nav";
+import { Footer } from "@/components/footer";
 import { getAuthSession } from "@/lib/auth";
 
 export default async function DashboardLayout({
@@ -28,8 +29,9 @@ export default async function DashboardLayout({
         <aside className="-ml-2 hidden w-full border-r pr-6 pt-6 md:block">
           <SidebarNav />
         </aside>
-        <main className="pt-6">{children}</main>
+        <main className="pb-16 pt-6">{children}</main>
       </div>
+      <Footer />
     </div>
   );
 }

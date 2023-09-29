@@ -15,8 +15,15 @@ export type SidebarNavItem = NavItem & {
   icon?: keyof typeof Icons;
 };
 
+type Feature = {
+  icon: keyof typeof Icons;
+  title: string;
+  body: string;
+};
+
 export type MarketingConfig = {
   mainNav: MainNavItem[];
+  features: Feature[];
 };
 
 export type FeedbackWithAuthor = Feedback & { author: User };

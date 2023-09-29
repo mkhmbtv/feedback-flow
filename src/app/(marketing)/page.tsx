@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Icons } from "@/components/icons";
-import { marketingFeatures } from "@/config";
+import { marketingConfig } from "@/config";
 
 export default async function Home() {
   return (
@@ -49,7 +49,7 @@ export default async function Home() {
           </Balancer>
         </div>
         <div className="mx-auto grid gap-4 sm:grid-cols-2 md:max-w-[64rem] md:grid-cols-3">
-          {marketingFeatures.map((feat) => {
+          {marketingConfig.features.map((feat) => {
             const Icon = Icons[feat.icon];
             return (
               <Card key={feat.title}>

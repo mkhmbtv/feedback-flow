@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { MainNav } from "@/components/main-nav";
+import { Footer } from "@/components/footer";
 import { buttonVariants } from "@/components/ui/button";
 import { getAuthSession } from "@/lib/auth";
 import { Icons } from "@/components/icons";
@@ -40,6 +41,7 @@ export default async function MarketingLayout({
         </div>
       </header>
       <main>{children}</main>
+      <Footer />
     </div>
   );
 }
