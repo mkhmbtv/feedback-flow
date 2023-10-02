@@ -2,17 +2,20 @@ import Link from "next/link";
 
 import { Icons } from "./icons";
 import { MainNavItem } from "@/types";
+import { cn } from "@/lib/utils";
 
-interface MainNavProps {
+interface MainNavProps extends React.ComponentPropsWithoutRef<"div"> {
   items?: MainNavItem[];
 }
 
-export function MainNav({ items }: MainNavProps) {
+export function MainNav({ items, className }: MainNavProps) {
   return (
-    <div className="flex items-center space-x-6">
+    <div className={cn("items-center space-x-6 md:flex", className)}>
       <Link href={"/"} className="flex items-center space-x-2">
         <Icons.logo />
-        <span className="text-lg font-bold">Feedback Flow</span>
+        <span className="hidden text-lg font-bold md:block">
+          Feedback Flow
+        </span>
       </Link>
       <nav className="flex space-x-6">
         {items?.map((item, index) => (

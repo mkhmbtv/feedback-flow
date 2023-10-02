@@ -8,6 +8,7 @@ import {
   Loader2,
   LucideProps,
   Megaphone,
+  Menu,
   MessagesSquare,
   Moon,
   Plus,
@@ -31,6 +32,7 @@ export const Icons = {
   component: Component,
   sun: Sun,
   moon: Moon,
+  menu: Menu,
   logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

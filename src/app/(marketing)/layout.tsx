@@ -6,6 +6,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { getAuthSession } from "@/lib/auth";
 import { Icons } from "@/components/icons";
 import { marketingConfig } from "@/config";
+import { MobileNav } from "@/components/mobile-nav";
 
 export default async function MarketingLayout({
   children,
@@ -18,7 +19,8 @@ export default async function MarketingLayout({
     <div className="flex min-h-screen flex-col">
       <header className="container z-50 border-b bg-background">
         <div className="flex h-16 items-center justify-between">
-          <MainNav items={marketingConfig.mainNav} />
+          <MainNav items={marketingConfig.mainNav} className="hidden" />
+          <MobileNav items={marketingConfig.mainNav} />
           <nav>
             {session?.user ? (
               <Link
