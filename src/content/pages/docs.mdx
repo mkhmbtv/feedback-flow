@@ -1,0 +1,48 @@
+---
+title: Documentation
+description: Feedback Flow Documentation.
+---
+
+Welcome to the Feedback Flow Documentation!
+In this concise guide, you'll discover everything you need to quickly and effectively implement Feedback Flow into your website.
+Let's dive right in!
+
+## Getting Started
+
+To begin adding feedback to your site, first, obtain the site ID from the URL,
+and then embed this iframe within your site.
+
+```
+<iframe src="https://feedback-flow-phi.vercel.app/embed/SITE_ID" />
+```
+
+## Multiple Routes
+
+If you want to add feedback to multiple routes in a single site,
+simply provide a distinct slug for that route.
+
+```
+<iframe src="https://feedback-flow-phi.vercel.app/embed/SITE_ID/ROUTE" />
+```
+
+This is perfect for adding comments to a blog or product reviews.
+
+## Automatic Resizing
+
+When embedding your feedback iframe, you may wish to enable automatic resizing of its height based on its content. This can be achieved through [iframe-resizer](https://github.com/davidjbradshaw/iframe-resizer).
+
+For instance, if you are using React, you can add [iframe-resizer-react](https://github.com/davidjbradshaw/iframe-resizer-react) and implement a setup like the following:
+
+```jsx
+<IframeResizer
+  checkOrigin={false}
+  title="Comments"
+  src={`https://feedback-flow-phi.vercel.app/embed/SITE_ID`}
+  style={{
+    width: "1px",
+    minWidth: "100%",
+  }}
+/>
+```
+
+It's worth noting that this library has a compact size of [5.9kB](https://bundlephobia.com/package/iframe-resizer-react@1.1.0) when minified and gzipped and doesn't rely on external dependencies.
