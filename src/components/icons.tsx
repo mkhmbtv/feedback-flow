@@ -1,5 +1,6 @@
 import {
   AppWindow,
+  Check,
   ChevronLeft,
   ChevronRight,
   Component,
@@ -33,6 +34,7 @@ export const Icons = {
   sun: Sun,
   moon: Moon,
   menu: Menu,
+  check: Check,
   logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
