@@ -1,34 +1,68 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# [Feedback Flow](feedback-flow-phi.vercel.app)
 
-## Getting Started
+Effortlessly integrate user reviews, feedback, and comments into your website with just a single line of code.
+With Feedback Flow, you can easily gather valuable insights from your users, enhance your website's user experience, and foster meaningful interactions with your audience.
 
-First, run the development server:
+## Tech Stack
+
+- **Framework:** [Next.js](https://nextjs.org)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com)
+- **User Management:** [NextAuth.js](https://next-auth.js.org/)
+- **Database:** [Planetscale](https://planetscale.com/)
+- **ORM:** [Prisma](https://prisma.io)
+- **UI Components:** [shadcn/ui](https://ui.shadcn.com)
+- **Content Management:** [Contentlayer](https://www.contentlayer.dev)
+- **Payment Processing:** [Stripe](https://stripe.com)
+
+## Features
+
+- **Next.js** App Router
+- **React** Server and Client components
+- Server Actions for mutations
+- **PlanetScale** MySQL database with **Prisma** ORM
+- User authentication with **NextAuth.js**
+- Contentful pages using **MDX** and **Contentlayer**
+- Subscriptions using **Stripe**
+- UI components with **shadcn/ui**
+- Validation with **Zod**
+- Written in **Typescript**
+- Styled with **Tailwind CSS**
+- Admin dashboard to manage sites, feedback, account and billing
+
+## Running Locally
+
+1. Clone the repository
+
+```bashe
+git clone https://github.com/mkhmbtv/feedback-flow
+```
+
+2. Install dependencies using npm
+
+```bash
+npm install
+```
+
+3. Copy the `.env.example` to `.env` and update the variables.
+
+```bash
+cp .env.example .env
+```
+
+4. Start the development server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+5. Push the database schema
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npx prisma db push
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+6. Start the Stripe webhook listener
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```bash
+npm run stripe:listen
+```
