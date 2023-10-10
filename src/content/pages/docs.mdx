@@ -12,7 +12,7 @@ Let's dive right in!
 To begin adding feedback to your site, first, obtain the site ID from the URL,
 and then embed this iframe within your site.
 
-```
+```mdx
 <iframe src="https://feedback-flow-phi.vercel.app/embed/SITE_ID" />
 ```
 
@@ -21,7 +21,7 @@ and then embed this iframe within your site.
 If you want to add feedback to multiple routes in a single site,
 simply provide a distinct slug for that route.
 
-```
+```mdx
 <iframe src="https://feedback-flow-phi.vercel.app/embed/SITE_ID/ROUTE" />
 ```
 
@@ -33,7 +33,7 @@ When embedding your feedback iframe, you may wish to enable automatic resizing o
 
 For instance, if you are using React, you can add [iframe-resizer-react](https://github.com/davidjbradshaw/iframe-resizer-react) and implement a setup like the following:
 
-```jsx
+```mdx
 <IframeResizer
   checkOrigin={false}
   title="Comments"

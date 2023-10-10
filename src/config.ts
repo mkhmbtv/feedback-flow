@@ -27,7 +27,7 @@ export const marketingConfig: MarketingConfig = {
     {
       icon: "mdx",
       title: "MDX",
-      body: "Enjoy dynamic and interactive content seamlessly, thanks to MDX",
+      body: "Enjoy dynamic and interactive content seamlessly, thanks to MDX and Contentlayer",
     },
     {
       icon: "component",
