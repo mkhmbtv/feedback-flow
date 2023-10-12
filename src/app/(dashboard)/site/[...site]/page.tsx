@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { Metadata } from "next";
 
 import { DashboardHeader } from "@/components/dashboard-header";
 import { DashboardShell } from "@/components/dashboard-shell";
@@ -9,6 +10,25 @@ import { db } from "@/lib/db";
 interface SiteFeedbackPageProps {
   params: {
     site: string[];
+  };
+}
+
+export async function generateMetadata({
+  params,
+}: SiteFeedbackPageProps): Promise<Metadata> {
+  const site = await db.site.findUnique({
+    where: {
+      id: params.site[0],
+    },
+  });
+
+  if (!site) {
+    return {};
+  }
+
+  return {
+    title: site.name,
+    description: `All feedback for ${site.url}`,
   };
 }
 
@@ -31,7 +51,7 @@ export default async function SiteFeedbackPage({
     <DashboardShell>
       <DashboardHeader
         title={site.name}
-        description={`All feedback for ${site.name}`}
+        description={`All feedback for ${site.url}`}
       />
       <FeedbackForm siteId={site.id} />
       <FeedbackSection siteId={site.id} route={route} />

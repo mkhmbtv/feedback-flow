@@ -12,7 +12,9 @@ export function Footer({ className }: FooterProps) {
         <div className="flex flex-col items-center gap-4 md:flex-row md:gap-2">
           <Icons.logo />
           <p className="text-center text-sm md:text-left">
-            Built by Mirkhat. Hosted on{" "}
+            Built by{" "}
+            <span className="font-semibold text-muted-foreground">mkhmbtv</span>
+            . Hosted on{" "}
             <a
               href="https://vercel.com"
               target="_blank"

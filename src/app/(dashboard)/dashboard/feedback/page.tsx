@@ -11,6 +11,7 @@ import type { FeedbackWithAuthor } from "@/types";
 
 export const metadata: Metadata = {
   title: "Feedback",
+  description: "Manage feedback for your sites",
 };
 
 async function getAllFeedbackForSites(
@@ -62,9 +63,6 @@ export default async function FeedbackPage() {
           <EmptyState>
             <EmptyState.Icon name="layout" />
             <EmptyState.Title>No feedback for your sites yet</EmptyState.Title>
-            {/* <EmptyState.Description>
-              
-            </EmptyState.Description> */}
           </EmptyState>
         )}
       </div>

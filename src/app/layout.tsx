@@ -16,6 +16,24 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: siteConfig.url,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    siteName: siteConfig.name,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [`${siteConfig.url}/opengraph-image.png`],
+  },
+  icons: {
+    icon: "/favicon.ico",
+  },
+  metadataBase: new URL(siteConfig.url),
 };
 
 export default function RootLayout({
@@ -28,11 +46,7 @@ export default function RootLayout({
       <body
         className={cn("bg-backgound min-h-screen antialiased", inter.className)}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-        >
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           {children}
           <Toaster />
         </ThemeProvider>

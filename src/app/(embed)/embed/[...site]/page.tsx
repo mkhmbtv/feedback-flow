@@ -24,6 +24,7 @@ interface EmbeddedFeedbackPageProps {
     site: string[];
   };
 }
+
 export default async function EmbeddedFeedbackPage({
   params,
 }: EmbeddedFeedbackPageProps) {

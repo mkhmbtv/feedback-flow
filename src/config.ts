@@ -4,6 +4,7 @@ export const siteConfig = {
   name: "Feedback Flow",
   description: "Transform your static site with comments and reviews",
   github: "https://github.com/mkhmbtv/feedback-flow",
+  url: "https://feedback-flow-phi.vercel.app",
 };
 
 export const marketingConfig: MarketingConfig = {

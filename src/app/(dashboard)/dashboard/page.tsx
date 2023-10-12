@@ -9,10 +9,11 @@ import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title: "Sites",
+  description: "Add and manage your sites",
 };
 
-export default async function DashboardPage() {
+export default async function SitesPage() {
   const session = await getAuthSession();
 
   const sites = await db.site.findMany({
