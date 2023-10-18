@@ -7,8 +7,6 @@ import { db } from "@/lib/db";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
-export const dynamic = "auto";
-
 export async function generateStaticParams() {
   const sites = await db.site.findMany();
 
