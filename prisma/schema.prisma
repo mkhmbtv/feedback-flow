@@ -76,7 +76,7 @@ model Site {
   timestamps  Boolean    @default(true)
   socialLogos Boolean    @default(true)
   ratings     Boolean    @default(false)
-  author      User       @relation(fields: [authorId], references: [id])
+  author      User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   feedback    Feedback[]
 
   @@index([authorId])
@@ -98,8 +98,8 @@ model Feedback {
   provider  String
   rating    String?
   status    FeedbackStatus @default(PENDING)
-  author    User           @relation(fields: [authorId], references: [id])
-  site      Site           @relation(fields: [siteId], references: [id])
+  author    User           @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  site      Site           @relation(fields: [siteId], references: [id], onDelete: Cascade)
 
   @@index([authorId])
   @@index([siteId])

@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { buttonVariants } from "./ui/button";
 import { cn } from "@/lib/utils";
+import { DeleteSite } from "./delete-site";
 
 interface SiteTableProps {
   sites: Pick<Site, "id" | "name" | "url" | "createdAt">[];
@@ -27,7 +28,8 @@ export function SiteTable({ sites }: SiteTableProps) {
           <TableHead>Name</TableHead>
           <TableHead>Site Link</TableHead>
           <TableHead>Feedback Link</TableHead>
-          <TableHead className="text-right">Date Added</TableHead>
+          <TableHead>Date Added</TableHead>
+          <TableHead className="w-[50px]" />
         </TableRow>
       </TableHeader>
       <TableBody>
@@ -56,8 +58,11 @@ export function SiteTable({ sites }: SiteTableProps) {
                 View Feedback
               </Link>
             </TableCell>
-            <TableCell className="text-right">
+            <TableCell>
               {dayjs(site.createdAt).format("MMM D, YYYY h:mm A")}
+            </TableCell>
+            <TableCell>
+              <DeleteSite siteId={site.id} />
             </TableCell>
           </TableRow>
         ))}
