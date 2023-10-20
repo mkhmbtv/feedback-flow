@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { toast } from "sonner";
+import { Feedback } from "@prisma/client";
 
 import {
   AlertDialog,
@@ -19,10 +20,10 @@ import { deleteFeedback } from "@/lib/actions";
 import { catchErrors } from "@/lib/utils";
 
 interface DeleteFeedbackProps {
-  feedbackId: string;
+  feedback: Feedback;
 }
 
-export default function DeleteFeedback({ feedbackId }: DeleteFeedbackProps) {
+export default function DeleteFeedback({ feedback }: DeleteFeedbackProps) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   return (
@@ -44,7 +45,7 @@ export default function DeleteFeedback({ feedbackId }: DeleteFeedbackProps) {
             onClick={async () => {
               try {
                 setIsLoading(true);
-                await deleteFeedback({ id: feedbackId });
+                await deleteFeedback(feedback);
                 toast.success("Sucessfully deleted feedback.");
               } catch (error) {
                 catchErrors(error);

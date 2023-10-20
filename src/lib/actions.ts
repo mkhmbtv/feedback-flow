@@ -52,8 +52,7 @@ export async function addSite(input: z.infer<typeof siteSchema>) {
 }
 
 export async function deleteSite(input: z.infer<typeof deleteSiteSchema>) {
-  const session = await getAuthSession();
-  if (!session) {
+  if (!hasSiteAccess(input.id)) {
     throw new Error("Unauthorized");
   }
 
@@ -68,7 +67,7 @@ export async function deleteSite(input: z.infer<typeof deleteSiteSchema>) {
 
 export async function createFeedback(input: z.infer<typeof feedbackSchema>) {
   const session = await getAuthSession();
-  if (!session) {
+  if (!session || !hasSiteAccess(input.siteId)) {
     throw new Error("Unauthorized");
   }
 
@@ -86,8 +85,7 @@ export async function createFeedback(input: z.infer<typeof feedbackSchema>) {
 export async function updateFeedback(
   input: z.infer<typeof updateFeedbackSchema>,
 ) {
-  const session = await getAuthSession();
-  if (!session) {
+  if (!hasSiteAccess(input.siteId)) {
     throw new Error("Unauthorized");
   }
 
@@ -106,26 +104,15 @@ export async function updateFeedback(
 export async function deleteFeedback(
   input: z.infer<typeof deleteFeedbackSchema>,
 ) {
-  const session = await getAuthSession();
-  if (!session) {
+  const { id, siteId, route } = input;
+
+  if (!hasSiteAccess(siteId)) {
     throw new Error("Unauthorized");
   }
 
-  const feedback = await db.feedback.findUnique({
-    where: {
-      id: input.id,
-    },
-  });
-
-  if (!feedback) {
-    throw new Error("Feedback not found.");
-  }
-
-  const { siteId, route } = feedback;
-
   await db.feedback.delete({
     where: {
-      id: input.id,
+      id,
     },
   });
 
@@ -191,4 +178,17 @@ export async function editUsername(input: z.infer<typeof userSchema>) {
       name: input.name,
     },
   });
+}
+
+async function hasSiteAccess(siteId: string) {
+  const session = await getAuthSession();
+
+  const count = await db.site.count({
+    where: {
+      id: siteId,
+      authorId: session?.user.id,
+    },
+  });
+
+  return count > 0;
 }

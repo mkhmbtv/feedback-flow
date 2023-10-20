@@ -45,7 +45,7 @@ export function FeedbackTable({ allFeedback }: FeedbackTableProps) {
               <SwitchFeedbackStatus feedback={feedback} />
             </TableCell>
             <TableCell>
-              <DeleteFeedback feedbackId={feedback.id} />
+              <DeleteFeedback feedback={feedback} />
             </TableCell>
           </TableRow>
         ))}

@@ -12,9 +12,12 @@ export const createFeedbackSchema = z.object({
 
 export const updateFeedbackSchema = z.object({
   id: z.string(),
+  siteId: z.string(),
   status: z.string(),
 });
 
 export const deleteFeedbackSchema = z.object({
   id: z.string(),
+  siteId: z.string(),
+  route: z.string(),
 });
