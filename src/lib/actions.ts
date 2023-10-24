@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
 
-import { deleteSiteSchema, siteSchema } from "./validations/site";
+import { deleteSiteSchema, siteSchema, updateSiteSchema } from "./validations/site";
 import {
   deleteFeedbackSchema,
   feedbackSchema,
@@ -49,6 +49,29 @@ export async function addSite(input: z.infer<typeof siteSchema>) {
   });
 
   revalidateTag(`${newSite.id}-data`);
+}
+
+export async function updateSite(
+  rawInput: z.infer<typeof updateSiteSchema>,
+) {
+  const {id, timestamps, socialLogos, ratings} = updateSiteSchema.parse(rawInput)
+
+  if (!hasSiteAccess(id)) {
+    throw new Error("Unauthorized");
+  }
+
+  await db.site.update({
+    where: {
+      id: id,
+    },
+    data: {
+      timestamps,
+      socialLogos,
+      ratings
+    },
+  });
+
+  revalidateTag(`${id}-data`);
 }
 
 export async function deleteSite(input: z.infer<typeof deleteSiteSchema>) {

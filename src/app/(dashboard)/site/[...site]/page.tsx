@@ -5,6 +5,7 @@ import { DashboardHeader } from "@/components/dashboard-header";
 import { DashboardShell } from "@/components/dashboard-shell";
 import { FeedbackForm } from "@/components/feedback-form";
 import { FeedbackSection } from "@/components/feedback-section";
+import { EditSiteModal } from "@/components/edit-site-modal";
 import { db } from "@/lib/db";
 
 interface SiteFeedbackPageProps {
@@ -52,7 +53,9 @@ export default async function SiteFeedbackPage({
       <DashboardHeader
         title={site.name}
         description={`All feedback for ${site.url}`}
-      />
+      >
+        <EditSiteModal site={site} />
+      </DashboardHeader>
       <FeedbackForm siteId={site.id} />
       <FeedbackSection siteId={site.id} route={route} />
     </DashboardShell>

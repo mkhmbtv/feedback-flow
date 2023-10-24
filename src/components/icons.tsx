@@ -13,6 +13,7 @@ import {
   MessagesSquare,
   Moon,
   Plus,
+  Settings,
   Sun,
   Trash2,
   User2,
@@ -35,6 +36,7 @@ export const Icons = {
   moon: Moon,
   menu: Menu,
   check: Check,
+  gear: Settings,
   logo: (props: LucideProps) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
