@@ -3,7 +3,11 @@
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
 
-import { deleteSiteSchema, siteSchema, updateSiteSchema } from "./validations/site";
+import {
+  deleteSiteSchema,
+  siteSchema,
+  updateSiteSchema,
+} from "./validations/site";
 import {
   deleteFeedbackSchema,
   feedbackSchema,
@@ -18,7 +22,9 @@ import { stripe } from "./stripe";
 import { subscriptionPlans } from "@/config";
 import { getUserSubscription } from "./subscription";
 
-export async function addSite(input: z.infer<typeof siteSchema>) {
+export async function addSite(rawData: z.infer<typeof siteSchema>) {
+  const data = siteSchema.parse(rawData);
+
   const session = await getAuthSession();
   if (!session) {
     throw new Error("Unauthorized");
@@ -42,8 +48,7 @@ export async function addSite(input: z.infer<typeof siteSchema>) {
 
   const newSite = await db.site.create({
     data: {
-      name: input.name,
-      url: input.url,
+      ...data,
       authorId: session.user.id,
     },
   });
@@ -51,10 +56,9 @@ export async function addSite(input: z.infer<typeof siteSchema>) {
   revalidateTag(`${newSite.id}-data`);
 }
 
-export async function updateSite(
-  rawInput: z.infer<typeof updateSiteSchema>,
-) {
-  const {id, timestamps, socialLogos, ratings} = updateSiteSchema.parse(rawInput)
+export async function updateSite(rawData: z.infer<typeof updateSiteSchema>) {
+  const { id, timestamps, socialLogos, ratings } =
+    updateSiteSchema.parse(rawData);
 
   if (!hasSiteAccess(id)) {
     throw new Error("Unauthorized");
@@ -67,57 +71,63 @@ export async function updateSite(
     data: {
       timestamps,
       socialLogos,
-      ratings
+      ratings,
     },
   });
 
   revalidateTag(`${id}-data`);
 }
 
-export async function deleteSite(input: z.infer<typeof deleteSiteSchema>) {
-  if (!hasSiteAccess(input.id)) {
+export async function deleteSite(rawData: z.infer<typeof deleteSiteSchema>) {
+  const { id } = deleteSiteSchema.parse(rawData);
+
+  if (!hasSiteAccess(id)) {
     throw new Error("Unauthorized");
   }
 
   await db.site.delete({
     where: {
-      id: input.id,
+      id,
     },
   });
 
-  revalidateTag(`${input.id}-data`);
+  revalidateTag(`${id}-data`);
 }
 
-export async function createFeedback(input: z.infer<typeof feedbackSchema>) {
+export async function createFeedback(rawData: z.infer<typeof feedbackSchema>) {
+  const data = feedbackSchema.parse(rawData);
+
   const session = await getAuthSession();
-  if (!session || !hasSiteAccess(input.siteId)) {
+  if (!session || !hasSiteAccess(data.siteId)) {
     throw new Error("Unauthorized");
   }
 
   await db.feedback.create({
     data: {
-      ...input,
+      ...data,
       authorId: session.user.id,
       provider: session.user.provider,
     },
   });
 
-  revalidateTag(`${input.siteId}-${input.route}-feedback`);
+  revalidateTag(`${data.siteId}-${data.route}-feedback`);
 }
 
 export async function updateFeedback(
-  input: z.infer<typeof updateFeedbackSchema>,
+  rawData: z.infer<typeof updateFeedbackSchema>,
 ) {
-  if (!hasSiteAccess(input.siteId)) {
+  const data = updateFeedbackSchema.parse(rawData);
+
+  if (!hasSiteAccess(data.siteId)) {
     throw new Error("Unauthorized");
   }
 
   const { siteId, route } = await db.feedback.update({
     where: {
-      id: input.id,
+      id: data.id,
     },
     data: {
-      status: input.status === "PENDING" ? "APPROVED" : "PENDING",
+      status: data.status === "PENDING" ? "APPROVED" : "PENDING",
     },
   });
 
@@ -125,9 +135,9 @@ export async function updateFeedback(
 }
 
 export async function deleteFeedback(
-  input: z.infer<typeof deleteFeedbackSchema>,
+  rawData: z.infer<typeof deleteFeedbackSchema>,
 ) {
-  const { id, siteId, route } = input;
+  const { id, siteId, route } = deleteFeedbackSchema.parse(rawData);
 
   if (!hasSiteAccess(siteId)) {
     throw new Error("Unauthorized");
@@ -143,8 +153,10 @@ export async function deleteFeedback(
 }
 
 export async function manageSubscription(
-  input: z.infer<typeof manageSubscriptionSchema>,
+  rawData: z.infer<typeof manageSubscriptionSchema>,
 ) {
+  const data = manageSubscriptionSchema.parse(rawData);
+
   const billingUrl = absoluteUrl("/dashboard/billing");
 
   const session = await getAuthSession();
@@ -152,9 +164,9 @@ export async function manageSubscription(
     throw new Error("User not found");
   }
 
-  if (input.isPro && input.stripeCustomerId) {
+  if (data.isPro && data.stripeCustomerId) {
     const stripeSession = await stripe.billingPortal.sessions.create({
-      customer: input.stripeCustomerId,
+      customer: data.stripeCustomerId,
       return_url: billingUrl,
     });
 
@@ -187,9 +199,11 @@ export async function manageSubscription(
   };
 }
 
-export async function editUsername(input: z.infer<typeof userSchema>) {
+export async function editUsername(rawData: z.infer<typeof userSchema>) {
+  const data = userSchema.parse(rawData);
+
   const session = await getAuthSession();
-  if (!session?.user || session.user.id !== input.id) {
+  if (!session?.user || session.user.id !== data.id) {
     throw new Error("Unauthorized");
   }
 
@@ -198,7 +212,7 @@ export async function editUsername(input: z.infer<typeof userSchema>) {
       id: session.user.id,
     },
     data: {
-      name: input.name,
+      name: data.name,
     },
   });
 }
