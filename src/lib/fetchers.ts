@@ -14,7 +14,7 @@ export async function getSiteData(siteId: string) {
     [`${siteId}-data`],
     {
       tags: [`${siteId}-data`],
-      revalidate: 10,
+      revalidate: 1,
     },
   )();
 }
@@ -43,7 +43,7 @@ export async function getSiteFeedback(siteId: string, route: string = "/") {
     [`${siteId}-${route}-feedback`],
     {
       tags: [`${siteId}-${route}-feedback`],
-      revalidate: 10,
+      revalidate: 1,
     },
   )();
 }
