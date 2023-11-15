@@ -13,18 +13,21 @@ interface SwitchFeedbackStatusProps {
 }
 
 export function SwitchFeedbackStatus({ feedback }: SwitchFeedbackStatusProps) {
+  const [_, startTransition] = React.useTransition();
   const isChecked = feedback.status === "APPROVED";
 
   return (
     <Switch
       checked={isChecked}
-      onCheckedChange={async () => {
-        try {
-          await updateFeedback(feedback);
-          toast.success("Sucessfully updated feedback.");
-        } catch (error) {
-          catchErrors(error);
-        }
+      onCheckedChange={() => {
+        startTransition(async () => {
+          try {
+            await updateFeedback(feedback);
+            toast.success("Sucessfully updated feedback.");
+          } catch (error) {
+            catchErrors(error);
+          }
+        });
       }}
     />
   );

@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 import { DashboardShell } from "@/components/dashboard-shell";
 import { DashboardHeader } from "@/components/dashboard-header";
@@ -7,7 +8,8 @@ import { EmptyState } from "@/components/empty-state";
 import { db } from "@/lib/db";
 import { getAuthSession } from "@/lib/auth";
 import { FeedbackTable } from "@/components/feedback-table";
-import type { FeedbackWithAuthor } from "@/types";
+import { FeedbackWithAuthor } from "@/types";
+import { buttonVariants } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Feedback",
@@ -62,7 +64,12 @@ export default async function FeedbackPage() {
         ) : (
           <EmptyState>
             <EmptyState.Icon name="layout" />
-            <EmptyState.Title>No feedback for your sites yet</EmptyState.Title>
+            <EmptyState.Title className="mb-8">
+              No feedback for your sites yet
+            </EmptyState.Title>
+            <Link href={"/dashboard"} className={buttonVariants()}>
+              Go to Sites
+            </Link>
           </EmptyState>
         )}
       </div>

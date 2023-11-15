@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 
-import { siteSchema } from "@/lib/validations/site";
+import { CreateSite } from "@/lib/validations/site";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,11 +26,11 @@ interface AddSiteFormProps {
   onSuccess: () => void;
 }
 
-type FormValues = z.infer<typeof siteSchema>;
+type FormValues = z.infer<typeof CreateSite>;
 
 export function AddSiteForm({ onSuccess }: AddSiteFormProps) {
   const form = useForm<FormValues>({
-    resolver: zodResolver(siteSchema),
+    resolver: zodResolver(CreateSite),
     defaultValues: {
       name: "",
       url: "",

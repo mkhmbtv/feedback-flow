@@ -18,14 +18,9 @@ import {
 import { updateSite } from "@/lib/actions";
 import { catchErrors } from "@/lib/utils";
 import { Icons } from "./icons";
+import { UpdateSite } from "@/lib/validations/site";
 
-const formSchema = z.object({
-  timestamps: z.boolean(),
-  socialLogos: z.boolean(),
-  ratings: z.boolean(),
-});
-
-type FormValues = z.infer<typeof formSchema>;
+type FormValues = z.infer<typeof UpdateSite>;
 
 interface EditSiteFormProps {
   site: Pick<Site, "id" | "timestamps" | "socialLogos" | "ratings">;
@@ -34,7 +29,7 @@ interface EditSiteFormProps {
 
 export function EditSiteForm({ site, onSuccess }: EditSiteFormProps) {
   const form = useForm<FormValues>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(UpdateSite),
     defaultValues: {
       timestamps: site.timestamps,
       socialLogos: site.socialLogos,
@@ -44,7 +39,7 @@ export function EditSiteForm({ site, onSuccess }: EditSiteFormProps) {
 
   async function onSubmit(data: FormValues) {
     try {
-      await updateSite({ id: site.id, ...data });
+      await updateSite(site.id, data);
       toast.success("Sucessfully edited your site.");
       onSuccess();
     } catch (error) {

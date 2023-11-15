@@ -3,15 +3,11 @@
 import { z } from "zod";
 import { revalidateTag } from "next/cache";
 
+import { CreateSite, UpdateSite } from "./validations/site";
 import {
-  deleteSiteSchema,
-  siteSchema,
-  updateSiteSchema,
-} from "./validations/site";
-import {
-  deleteFeedbackSchema,
-  feedbackSchema,
-  updateFeedbackSchema,
+  CreateFeedback,
+  DeleteFeedback,
+  UpdateFeedback,
 } from "./validations/feedback";
 import { manageSubscriptionSchema } from "./validations/stripe";
 import { userSchema } from "./validations/user";
@@ -22,8 +18,8 @@ import { stripe } from "./stripe";
 import { subscriptionPlans } from "@/config";
 import { getUserSubscription } from "./subscription";
 
-export async function addSite(rawData: z.infer<typeof siteSchema>) {
-  const data = siteSchema.parse(rawData);
+export async function addSite(rawData: z.infer<typeof CreateSite>) {
+  const data = CreateSite.parse(rawData);
 
   const session = await getAuthSession();
   if (!session) {
@@ -56,9 +52,11 @@ export async function addSite(rawData: z.infer<typeof siteSchema>) {
   revalidateTag(`${newSite.id}-data`);
 }
 
-export async function updateSite(rawData: z.infer<typeof updateSiteSchema>) {
-  const { id, timestamps, socialLogos, ratings } =
-    updateSiteSchema.parse(rawData);
+export async function updateSite(
+  id: string,
+  rawData: z.infer<typeof UpdateSite>,
+) {
+  const { timestamps, socialLogos, ratings } = UpdateSite.parse(rawData);
 
   if (!hasSiteAccess(id)) {
     throw new Error("Unauthorized");
@@ -78,9 +76,7 @@ export async function updateSite(rawData: z.infer<typeof updateSiteSchema>) {
   revalidateTag(`${id}-data`);
 }
 
-export async function deleteSite(rawData: z.infer<typeof deleteSiteSchema>) {
-  const { id } = deleteSiteSchema.parse(rawData);
-
+export async function deleteSite(id: string) {
   if (!hasSiteAccess(id)) {
     throw new Error("Unauthorized");
   }
@@ -94,8 +90,8 @@ export async function deleteSite(rawData: z.infer<typeof deleteSiteSchema>) {
   revalidateTag(`${id}-data`);
 }
 
-export async function createFeedback(rawData: z.infer<typeof feedbackSchema>) {
-  const data = feedbackSchema.parse(rawData);
+export async function createFeedback(rawData: z.infer<typeof CreateFeedback>) {
+  const data = CreateFeedback.parse(rawData);
 
   const session = await getAuthSession();
   if (!session || !hasSiteAccess(data.siteId)) {
@@ -113,10 +109,8 @@ export async function createFeedback(rawData: z.infer<typeof feedbackSchema>) {
   revalidateTag(`${data.siteId}-${data.route}-feedback`);
 }
 
-export async function updateFeedback(
-  rawData: z.infer<typeof updateFeedbackSchema>,
-) {
-  const data = updateFeedbackSchema.parse(rawData);
+export async function updateFeedback(rawData: z.infer<typeof UpdateFeedback>) {
+  const data = UpdateFeedback.parse(rawData);
 
   if (!hasSiteAccess(data.siteId)) {
     throw new Error("Unauthorized");
@@ -134,10 +128,8 @@ export async function updateFeedback(
   revalidateTag(`${siteId}-${route}-feedback`);
 }
 
-export async function deleteFeedback(
-  rawData: z.infer<typeof deleteFeedbackSchema>,
-) {
-  const { id, siteId, route } = deleteFeedbackSchema.parse(rawData);
+export async function deleteFeedback(rawData: z.infer<typeof DeleteFeedback>) {
+  const { id, siteId, route } = DeleteFeedback.parse(rawData);
 
   if (!hasSiteAccess(siteId)) {
     throw new Error("Unauthorized");

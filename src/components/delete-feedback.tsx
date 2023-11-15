@@ -5,18 +5,13 @@ import { toast } from "sonner";
 import { Feedback } from "@prisma/client";
 
 import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Icons } from "./icons";
 import { deleteFeedback } from "@/lib/actions";
+import { Button } from "./ui/button";
 import { catchErrors } from "@/lib/utils";
 
 interface DeleteFeedbackProps {
@@ -24,44 +19,33 @@ interface DeleteFeedbackProps {
 }
 
 export default function DeleteFeedback({ feedback }: DeleteFeedbackProps) {
-  const [isLoading, setIsLoading] = React.useState(false);
-
   return (
-    <AlertDialog>
-      <AlertDialogTrigger className="flex items-center justify-center">
-        <Icons.delete className="h-4 w-4" />
-      </AlertDialogTrigger>
-      <AlertDialogContent>
-        <AlertDialogHeader>
-          <AlertDialogTitle>Delete Feedback - are you sure?</AlertDialogTitle>
-          <AlertDialogDescription>
-            This action cannot be undone.
-          </AlertDialogDescription>
-        </AlertDialogHeader>
-        <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            className="bg-red-600 focus:ring-red-600"
-            onClick={async () => {
-              try {
-                setIsLoading(true);
-                await deleteFeedback(feedback);
-                toast.success("Sucessfully deleted feedback.");
-              } catch (error) {
-                catchErrors(error);
-              } finally {
-                setIsLoading(false);
-              }
-            }}
-            disabled={isLoading}
-          >
-            {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Delete
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+    <form
+      action={() => {
+        toast.promise(
+          deleteFeedback({
+            id: feedback.id,
+            siteId: feedback.siteId,
+            route: feedback.route,
+          }),
+          {
+            loading: "Deleting...",
+            success: () => "Feedback deleted successfully.",
+            error: (err: unknown) => catchErrors(err),
+          },
+        );
+      }}
+    >
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button variant="ghost" type="submit">
+            <Icons.delete className="h-4 w-4" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>Delete Feedback</p>
+        </TooltipContent>
+      </Tooltip>
+    </form>
   );
 }

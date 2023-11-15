@@ -15,7 +15,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
-import { createFeedbackSchema } from "@/lib/validations/feedback";
 import { Button } from "./ui/button";
 import { createFeedback } from "@/lib/actions";
 import { catchErrors } from "@/lib/utils";
@@ -25,14 +24,18 @@ interface FeedbackFormProps {
   siteId: string;
 }
 
-type FormValues = z.infer<typeof createFeedbackSchema>;
+const FormSchema = z.object({
+  text: z.string().min(1, "Please enter your comment"),
+});
+
+type FormValues = z.infer<typeof FormSchema>;
 
 export function FeedbackForm({ siteId }: FeedbackFormProps) {
   const { site: siteParams } = useParams() as { site: string[] };
   const route = siteParams.length > 1 ? siteParams[1] : null;
 
   const form = useForm<FormValues>({
-    resolver: zodResolver(createFeedbackSchema),
+    resolver: zodResolver(FormSchema),
     defaultValues: {
       text: "",
     },
