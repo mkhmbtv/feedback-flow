@@ -8,7 +8,7 @@ With Feedback Flow, you can easily gather valuable insights from your users, enh
 - **Framework:** [Next.js](https://nextjs.org)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com)
 - **User Management:** [NextAuth.js](https://next-auth.js.org/)
-- **Database:** [Planetscale](https://planetscale.com/)
+- **Database:** [Neon](https://neon.tech/)
 - **ORM:** [Prisma](https://prisma.io)
 - **UI Components:** [shadcn/ui](https://ui.shadcn.com)
 - **Content Management:** [Contentlayer](https://www.contentlayer.dev)
@@ -19,7 +19,7 @@ With Feedback Flow, you can easily gather valuable insights from your users, enh
 - **Next.js** App Router
 - **React** Server and Client components
 - Server Actions for mutations
-- **PlanetScale** MySQL database with **Prisma** ORM
+- **Neon** Postgres database with **Prisma** ORM
 - User authentication with **NextAuth.js**
 - Contentful pages using **MDX** and **Contentlayer**
 - Subscriptions using **Stripe**

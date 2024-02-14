@@ -17,13 +17,13 @@ export const marketingConfig: MarketingConfig = {
   features: [
     {
       icon: "next",
-      title: "Next.js 13",
-      body: "Harness the power of Next.js 13 for blazing-fast web applications and cutting-edge development.",
+      title: "Next.js 14",
+      body: "Harness the power of Next.js 14 for blazing-fast web applications and cutting-edge development.",
     },
     {
-      icon: "planetscale",
+      icon: "neon",
       title: "Database",
-      body: "Built on the strength of PlanetScale for database management and Prisma as its ORM, ensuring reliability and efficiency at the core.",
+      body: "Built on the strength of Neon for database management and Prisma as its ORM, ensuring reliability and efficiency at the core.",
     },
     {
       icon: "mdx",
